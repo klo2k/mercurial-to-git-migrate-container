@@ -1,0 +1,39 @@
+services:
+  migrate:
+    image: klo2k/mercurial-to-git-migrate:latest
+    container_name: mercurial_to_git_migrate
+    # **** Change these to your needs ****
+    environment:
+      # Mercurial repository URL with user name and password
+      HG_REPO_URL: https://username:password@hg.example.com/example-project/
+      # Git remote SSH URL
+      GIT_REPO_URL: git@git.example.com:team/example-project.git
+      # Git branch to push into
+      GIT_MAIN_BRANCH: main
+      # Push to Git repo - set to 1 to push once you've previewed the run - "0" will do everything except push to Git repo.
+      GIT_PUSH_TO_REMOTE: 0
+      # SSH known hosts - will go into container's ~/.ssh/known_hosts
+      SSH_KNOWN_HOSTS: |
+        github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
+        gitlab.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAfuCHKVTjquxvt6CM6tdG4SLp1Btn/nOeHHE5UOzRdf
+        bitbucket.org ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAubiN81eDcafrgMeLzaFPsw2kNvEcqTKl/VqLat/MaB33pZy0y3rJZtnqwR2qOOvbwKZYKiEO1O6VqNEBxKvJJelCq0dTXWT5pbO2gDXC6h6QDXCaHo6pOHGPUy+YBaGQRGuSusMEASYiWunYN0vCAI8QaXnWMXNMdFP3jHAJH0eDsoiGnLPBlBp4TNm6rYI74nMzgz3B9IikW4WVK+dc8KZJZWYjAuORU3jc1c/NPskD2ASinf8v3xnfXeukU0sJ5N6m5E8VLjObPEO+mN2t/FZTMZLiFqPWc/ALSqnMnnhwrNi2rbfg/rd/IpL8Le3pSBne8+seeFVBoGqzHM9yXw==
+      # Custom mercurial .hgrc config - this will end up in ~/.hgrc inside container
+      # e.g.:
+      # HG_CONFIGS: |
+      #   [hostsecurity]
+      #   hg.example.com:minimumprotocol = tls1.0
+      HG_CONFIGS: ""
+      # Leave this alone unless you're working on the container's code
+      DEVELOPMENT_MODE: ${DEVELOPMENT_MODE:-0}
+    secrets:
+      - ssh_id
+      - ssh_id_pub
+
+secrets:
+  # **** Change these to your needs ****
+  ssh_id:
+    # Set this to your host's path of your SSH private key - must not be encrypted
+    file: ~/.ssh/mq/id_ed25519
+  ssh_id_pub:
+    # Set this to your host's path of your SSH public key
+    file: ~/.ssh/mq/id_ed25519.pub
