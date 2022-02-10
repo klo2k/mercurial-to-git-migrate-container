@@ -3,7 +3,7 @@
 Container to migrate from Mercurial repository into Git repository, directly between remotes via Docker container.
 
 ```text
-Mercurial --pull--> [This Container] --push--> Git
+Mercurial --clone--> [This Container] --push--> Git
 ```
 
 I developed this for my own use case but thought I'd share this.
@@ -54,7 +54,7 @@ Basically a recent version of `docker` and `docker-compose` - developed with the
 
 ## Credits
 
-My work wouldn't be possible with these awesome people!
+My work wouldn't be possible without these awesome people!
 
 - Frej Drejhammar (frej): For his [fast-export](https://github.com/frej/fast-export) code!
 - Git Team: For their [mercurial to Git conversion guide](https://git-scm.com/book/en/v2/Git-and-Other-Systems-Migrating-to-Git#_mercurial)
